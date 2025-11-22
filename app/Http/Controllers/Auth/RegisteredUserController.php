@@ -30,21 +30,23 @@ class RegisteredUserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'name' => ['required', 'string', 'max:191'],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:191', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'bio' => ['nullable', 'string', 'max:160'], // Added Bio validation
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'bio' => $request->bio, // Save the bio
         ]);
 
         event(new Registered($user));
 
         Auth::login($user);
-
-        return redirect(route('dashboard', absolute: false));
+        // Ensure this also says 'tweets.index'
+        return redirect(route('tweets.index', absolute: false));
     }
 }
