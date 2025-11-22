@@ -20,8 +20,8 @@ class UserController extends Controller
         // Requirement: Show total tweet count and total likes received [cite: 82]
         $tweetCount = $tweets->count();
         
-        // Logic: Sum up the 'likes_count' of all user's tweets
-        $receivedLikesCount = $user->tweets()->withCount('likes')->get()->sum('likes_count');
+        // Optimization: Sum the 'likes_count' from the tweets we already fetched
+        $receivedLikesCount = $tweets->sum('likes_count');
 
         return view('users.show', compact('user', 'tweets', 'tweetCount', 'receivedLikesCount'));
     }
