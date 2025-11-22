@@ -11,16 +11,26 @@ use Illuminate\Http\RedirectResponse;
 class TweetController extends Controller
 {
     // Display all tweets (Newest first)
-    public function index(): View
+    public function index(Request $request): View
     {
-        // Eager load 'user' and 'likes' to prevent N+1 query performance issues
-        // withCount('likes') adds a 'likes_count' attribute to each tweet
-            $tweets = Tweet::with(['user', 'likes'])
-                ->withCount('likes')
-                ->orderByDesc('created_at') // Strict ordering by newest
-                ->get();
+        // 1. Get the sort preference (default to 'newest')
+        $sortDirection = $request->query('sort', 'newest');
 
-        return view('tweets.index', compact('tweets'));
+        // 2. Build the query
+        $query = Tweet::with('user', 'likes')
+            ->withCount('likes');
+
+        // 3. Apply sorting logic
+        if ($sortDirection === 'oldest') {
+            $query->oldest(); // Order by created_at ASC
+        } else {
+            $query->latest(); // Order by created_at DESC (Default)
+        }
+
+        $tweets = $query->get();
+
+        // 4. Pass the current sort to the view so we can style the button
+        return view('tweets.index', compact('tweets', 'sortDirection'));
     }
 
     // Store a new tweet
