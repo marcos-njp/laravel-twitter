@@ -9,7 +9,17 @@ use Illuminate\Support\Facades\Auth; // <--- ADD THIS IMPORT
 
 // FIX: Show Landing Page for guests, Feed for logged-in users
 Route::get('/', function () {
-    return Auth::check() ? redirect()->route('tweets.index') : view('welcome');
+    // If logged in, go to Feed
+    if (Auth::check()) {
+        return redirect()->route('tweets.index');
+    }
+
+    // If guest, show Landing Page with data
+    // Fetch 3 random users for the "Join others" section
+    $users = \App\Models\User::inRandomOrder()->take(3)->get();
+    $totalUsers = \App\Models\User::count();
+
+    return view('welcome', compact('users', 'totalUsers'));
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {

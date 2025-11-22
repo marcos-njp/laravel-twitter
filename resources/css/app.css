@@ -13,6 +13,24 @@
     --border-color: #e7e5e4;
 }
 
+/* 1. BASE TYPOGRAPHY (The Fix) */
+body, p, span, a, li, div {
+    font-family: 'Inter', sans-serif;
+    color: var(--text-main);
+}
+
+/* 2. HEADINGS (Brand Identity) */
+h1, h2, h3, h4, h5, h6, .navbar-brand, .brand-font {
+    font-family: 'Merriweather', serif;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+/* 3. FORM ELEMENTS (Strict Enforcement) */
+input, button, select, textarea, .form-control, .btn {
+    font-family: 'Inter', sans-serif !important; /* Force consistency */
+}
+
 body {
     background-color: var(--bg-color);
     color: var(--text-main);
