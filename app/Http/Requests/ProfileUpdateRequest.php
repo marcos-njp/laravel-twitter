@@ -16,15 +16,16 @@ class ProfileUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255'],
+            'name' => ['required', 'string', 'max:191'], // Enforce 191 limit
             'email' => [
                 'required',
                 'string',
                 'lowercase',
                 'email',
-                'max:255',
+                'max:191',
                 Rule::unique(User::class)->ignore($this->user()->id),
             ],
+            'bio' => ['nullable', 'string', 'max:160'], // Twitter standard bio length
         ];
     }
 }
