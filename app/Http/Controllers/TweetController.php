@@ -15,10 +15,10 @@ class TweetController extends Controller
     {
         // Eager load 'user' and 'likes' to prevent N+1 query performance issues
         // withCount('likes') adds a 'likes_count' attribute to each tweet
-        $tweets = Tweet::with('user', 'likes')
-            ->withCount('likes')
-            ->latest()
-            ->get();
+            $tweets = Tweet::with(['user', 'likes'])
+                ->withCount('likes')
+                ->orderByDesc('created_at') // Strict ordering by newest
+                ->get();
 
         return view('tweets.index', compact('tweets'));
     }
@@ -27,11 +27,16 @@ class TweetController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
-            'content' => 'required|string|max:280',
+              'content' => ['required', 'string', 'max:280'], // Strict 280 char limit
         ]);
 
         // Create tweet associated with current user
-        $request->user()->tweets()->create($validated);
+           // Ensure only the validated content is stored, with user_id and timestamp
+           $tweet = new \App\Models\Tweet();
+           $tweet->content = $validated['content'];
+           $tweet->user_id = $request->user()->id;
+           $tweet->created_at = now();
+           $tweet->save();
 
         return redirect()->route('tweets.index')->with('success', 'Tweet posted!');
     }
@@ -58,23 +63,26 @@ class TweetController extends Controller
             'content' => 'required|string|max:280',
         ]);
 
-        $tweet->update([
-            'content' => $validated['content'],
-            'is_edited' => true, // Mark as edited
-        ]);
+        // Only update and mark as edited if content is different
+        if ($tweet->content !== $validated['content']) {
+            $tweet->update([
+                'content' => $validated['content'],
+                'is_edited' => true,
+            ]);
+        }
 
-        return redirect()->route('tweets.index')->with('success', 'Tweet updated!');
+        return redirect()->route('tweets.index')->with('success', 'Tweet updated successfully!');
     }
 
     // Delete tweet
     public function destroy(Tweet $tweet): RedirectResponse
     {
         if ($tweet->user_id !== Auth::id()) {
-            abort(403);
+            abort(403, 'You are not authorized to delete this tweet.');
         }
 
-        $tweet->delete();
+        $tweet->delete(); // Remove from database
 
-        return redirect()->route('tweets.index')->with('success', 'Tweet deleted!');
+        return redirect()->route('tweets.index')->with('success', 'Tweet deleted.');
     }
 }
