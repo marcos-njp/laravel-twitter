@@ -7,22 +7,33 @@ use Illuminate\View\View;
 
 class UserController extends Controller
 {
-    public function show(User $user): View
+    public function show(User $user)
     {
-        // Requirement: List all tweets by that user [cite: 81]
-        // Eager load likes to prevent N+1 queries
-        $tweets = $user->tweets()
-            ->with(['user', 'likes'])
-            ->withCount('likes')
-            ->latest()
-            ->get();
+        // 1. Calculate Stats
+        $tweetCount = $user->tweets()->count();
+        $receivedLikesCount = $user->tweets()->withCount('likes')->get()->sum('likes_count');
 
-        // Requirement: Show total tweet count and total likes received [cite: 82]
-        $tweetCount = $tweets->count();
-        
-        // Optimization: Sum the 'likes_count' from the tweets we already fetched
-        $receivedLikesCount = $tweets->sum('likes_count');
+        // 2. Check which tab we are on (Default to 'tweets')
+        $tab = request()->query('tab', 'tweets');
 
-        return view('users.show', compact('user', 'tweets', 'tweetCount', 'receivedLikesCount'));
+        if ($tab === 'likes') {
+            // Fetch tweets where the 'likes' relationship contains this user
+            $tweets = \App\Models\Tweet::whereHas('likes', function ($query) use ($user) {
+                $query->where('user_id', $user->id);
+            })
+                ->with(['user', 'likes'])
+                ->withCount('likes')
+                ->latest() // Order by when the tweet was created (standard)
+                ->get();
+        } else {
+            // Fetch user's own tweets
+            $tweets = $user->tweets()
+                ->with(['user', 'likes'])
+                ->withCount('likes')
+                ->latest()
+                ->get();
+        }
+
+        return view('users.show', compact('user', 'tweets', 'tweetCount', 'receivedLikesCount', 'tab'));
     }
 }
