@@ -62,4 +62,71 @@
         </main>
     </div>
 </body>
+<script>
+function toggleLike(btn, tweetId) {
+    // Swap icons instantly
+    const outline = btn.querySelector('.icon-outline');
+    const solid = btn.querySelector('.icon-solid');
+    const countSpan = btn.querySelector('.like-count');
+    const liked = btn.classList.contains('text-danger');
+
+    // Optimistic UI update
+    if (liked) {
+        btn.classList.remove('text-danger');
+        btn.classList.add('text-muted');
+        outline.classList.remove('d-none');
+        solid.classList.add('d-none');
+        countSpan.textContent = parseInt(countSpan.textContent) - 1;
+    } else {
+        btn.classList.remove('text-muted');
+        btn.classList.add('text-danger');
+        outline.classList.add('d-none');
+        solid.classList.remove('d-none');
+        countSpan.textContent = parseInt(countSpan.textContent) + 1;
+    }
+
+    // Send AJAX request
+    fetch(`/tweets/${tweetId}/like`, {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            'Accept': 'application/json',
+        },
+        credentials: 'same-origin',
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Sync UI with server response
+        if (data.liked) {
+            btn.classList.remove('text-muted');
+            btn.classList.add('text-danger');
+            outline.classList.add('d-none');
+            solid.classList.remove('d-none');
+        } else {
+            btn.classList.remove('text-danger');
+            btn.classList.add('text-muted');
+            outline.classList.remove('d-none');
+            solid.classList.add('d-none');
+        }
+        countSpan.textContent = data.count;
+    })
+    .catch(() => {
+        // Revert UI on error
+        if (liked) {
+            btn.classList.add('text-danger');
+            btn.classList.remove('text-muted');
+            outline.classList.add('d-none');
+            solid.classList.remove('d-none');
+            countSpan.textContent = parseInt(countSpan.textContent) + 1;
+        } else {
+            btn.classList.add('text-muted');
+            btn.classList.remove('text-danger');
+            outline.classList.remove('d-none');
+            solid.classList.add('d-none');
+            countSpan.textContent = parseInt(countSpan.textContent) - 1;
+        }
+        alert('Could not update like. Please try again.');
+    });
+}
+</script>
 </html>
