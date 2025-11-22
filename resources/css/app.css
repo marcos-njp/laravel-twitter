@@ -1,5 +1,68 @@
 @import 'bootstrap/dist/css/bootstrap.min.css';
 
+/* BIRDIE MINIMALIST THEME */
+body {
+    background-color: #ffffff; /* Clean white background */
+    color: #0f1419;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* Navigation Polish */
+.navbar {
+    border-bottom: 1px solid #eff3f4;
+    backdrop-filter: blur(12px);
+    background-color: rgba(255, 255, 255, 0.9) !important;
+}
+
+/* Feed Styling - No more floating boxes */
+.feed-container {
+    border-left: 1px solid #eff3f4;
+    border-right: 1px solid #eff3f4;
+    min-height: 100vh;
+}
+
+.tweet-item {
+    border-bottom: 1px solid #eff3f4;
+    transition: background-color 0.2s;
+    cursor: pointer;
+}
+
+.tweet-item:hover {
+    background-color: #f7f9f9; /* Subtle hover effect */
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: #1d9bf0;
+    border-color: #1d9bf0;
+    font-weight: bold;
+}
+
+.btn-primary:hover {
+    background-color: #1a8cd8;
+}
+
+.btn-outline-danger {
+    border-color: #cfd9de;
+    color: #f4212e;
+}
+
+.btn-outline-danger:hover {
+    background-color: #fbecec; /* Soft red hover */
+    color: #f4212e;
+    border-color: #f4212e;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+}
+
+.text-muted {
+    color: #536471 !important;
+}
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
 /* Custom global styles if needed */
 body {
     background-color: #f8f9fa;
