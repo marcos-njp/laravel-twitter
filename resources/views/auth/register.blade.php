@@ -1,4 +1,6 @@
 <x-guest-layout>
+    <h3 class="fw-bold mb-4">Sign Up</h3>
+    
     <form method="POST" action="{{ route('register') }}">
         @csrf
 
@@ -35,12 +37,12 @@
                    class="form-control" required>
         </div>
 
-        <div class="d-flex justify-content-between align-items-center">
-            <a class="text-decoration-none small" href="{{ route('login') }}">
-                Already registered?
+        <div class="d-flex justify-content-between align-items-center mt-4">
+            <a class="text-decoration-none" href="{{ route('login') }}">
+                Already have an account?
             </a>
 
-            <button type="submit" class="btn btn-primary">Register</button>
+            <button type="submit" class="btn btn-primary px-4">Sign Up</button>
         </div>
     </form>
 </x-guest-layout>
