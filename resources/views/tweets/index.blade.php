@@ -69,8 +69,13 @@
                 <div class="d-flex gap-3">
                     <form action="{{ route('tweets.like', $tweet) }}" method="POST">
                         @csrf
-                        @php $userHasLiked = $tweet->likes->contains('user_id', Auth::id()); @endphp
-                        <button type="submit" class="btn btn-sm {{ $userHasLiked ? 'btn-danger' : 'btn-light text-danger' }} border border-danger">
+                        @php
+                            // Check efficiently if the loaded likes collection contains current user ID
+                            $userHasLiked = $tweet->likes->contains('user_id', Auth::id());
+                        @endphp
+
+                        <button type="submit" 
+                                class="btn btn-sm {{ $userHasLiked ? 'btn-danger' : 'btn-light text-danger' }} border border-danger rounded-pill px-3">
                             {{ $userHasLiked ? '❤️' : '🤍' }} 
                             <span class="ms-1 fw-bold">{{ $tweet->likes_count }}</span>
                         </button>
