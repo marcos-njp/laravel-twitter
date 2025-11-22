@@ -1,129 +1,133 @@
 <x-app-layout>
-    <div class="p-3 border-bottom bg-white">
-        <div class="d-flex justify-content-between align-items-start mb-2">
-            <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center border border-4 border-white shadow-sm" 
-                 style="width: 100px; height: 100px; font-size: 2.5rem; font-weight: bold; margin-top: -10px;">
-                {{ substr($user->name, 0, 1) }}
-            </div>
-
-            @if(Auth::id() === $user->id)
-                <a href="{{ route('profile.edit') }}" class="btn btn-outline-dark rounded-pill fw-bold px-3 py-1 btn-sm d-flex align-items-center gap-1">
-                    <x-heroicon-m-pencil style="width: 16px;" /> Edit profile
-                </a>
-            @endif
-        </div>
-
-        <div>
-            <h4 class="fw-bold mb-0 text-dark">{{ $user->name }}</h4>
-            <div class="text-muted small mb-3">@ {{ strtolower(str_replace(' ', '', $user->name)) }}</div>
-
-            @if($user->bio)
-                <p class="mb-3 text-dark" style="font-size: 15px;">{{ $user->bio }}</p>
-            @endif
-
-            <div class="d-flex align-items-center gap-3 text-muted small mb-3">
-                <span class="d-flex align-items-center gap-1">
-                    <x-heroicon-m-calendar style="width: 18px;" />
-                    Joined {{ $user->created_at->format('F Y') }}
-                </span>
-            </div>
-
-            <div class="d-flex gap-4">
-                <div class="d-flex gap-1 align-items-center hover-underline cursor-pointer">
-                    <span class="fw-bold text-dark">{{ $tweetCount }}</span>
-                    <span class="text-muted small">Tweets</span>
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
+            
+            <div class="modern-card p-5 text-center mb-4 position-relative">
+                
+                <div class="rounded-circle bg-dark text-white d-flex align-items-center justify-content-center shadow-sm mx-auto mb-3" 
+                     style="width: 90px; height: 90px; font-family: 'Merriweather', serif; font-weight: 700; font-size: 2.5rem;">
+                    {{ substr($user->name, 0, 1) }}
                 </div>
-                <div class="d-flex gap-1 align-items-center hover-underline cursor-pointer">
-                    <span class="fw-bold text-dark">{{ $receivedLikesCount }}</span>
-                    <span class="text-muted small">Likes Received</span>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <div class="d-flex border-bottom text-center">
-        <div class="flex-grow-1 p-3 fw-bold border-bottom border-primary border-3 text-dark cursor-pointer">
-            Tweets
-        </div>
-        <div class="flex-grow-1 p-3 fw-bold text-muted cursor-pointer text-opacity-50">
-            Likes
-        </div>
-        <div class="flex-grow-1 p-3 fw-bold text-muted cursor-pointer text-opacity-50">
-            Media
-        </div>
-    </div>
+                <h3 class="fw-bold mb-1" style="font-family: 'Merriweather', serif;">{{ $user->name }}</h3>
+                <p class="text-muted small mb-4">Joined {{ $user->created_at->format('F Y') }}</p>
 
-    @forelse ($tweets as $tweet)
-        <div class="tweet-item p-3 d-flex gap-3 border-bottom">
-            <div class="rounded-circle bg-light text-secondary d-flex align-items-center justify-content-center flex-shrink-0 border" style="width: 48px; height: 48px; font-weight: bold;">
-                {{ substr($tweet->user->name, 0, 1) }}
-            </div>
-
-            <div class="w-100">
-                <div class="d-flex justify-content-between align-items-start">
-                    <div class="d-flex align-items-center gap-2">
-                        <span class="text-dark fw-bold">{{ $tweet->user->name }}</span>
-                        <span class="text-muted small">@ {{ strtolower(str_replace(' ', '', $tweet->user->name)) }} · {{ $tweet->created_at->diffForHumans(null, true, true) }}</span>
-                        @if($tweet->is_edited)
-                            <span class="text-muted" title="Edited">
-                                <x-heroicon-m-pencil-square style="width: 14px;" />
-                            </span>
-                        @endif
+                @if(Auth::id() === $user->id)
+                    <div class="mb-4">
+                        <a href="{{ route('profile.edit') }}" class="btn btn-sm btn-outline-dark rounded-pill px-4 fw-bold">
+                            Edit Profile Settings
+                        </a>
                     </div>
+                @endif
 
-                    @if (Auth::id() === $tweet->user_id)
-                        <div class="dropdown">
-                            <button class="btn btn-link text-muted p-0" style="line-height: 0;" data-bs-toggle="dropdown">
-                                <x-heroicon-m-ellipsis-horizontal style="width: 20px;" />
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0">
-                                <li>
-                                    <a class="dropdown-item d-flex align-items-center gap-2" href="{{ route('tweets.edit', $tweet) }}">
-                                        <x-heroicon-s-pencil style="width: 16px;" /> Edit Post
+                <div class="d-flex justify-content-center mb-4">
+                    <p class="text-dark fst-italic" style="max-width: 400px; font-size: 0.95rem; line-height: 1.6;">
+                        @if($user->bio)
+                            {{ $user->bio }}
+                        @else
+                            <span class="text-muted opacity-50">No bio yet.</span>
+                        @endif
+                    </p>
+                </div>
+
+                <div class="d-flex justify-content-center gap-5 border-top pt-4">
+                    <div class="text-center">
+                        <h4 class="fw-bold mb-0" style="color: #1a4d2e;">{{ $tweetCount }}</h4>
+                        <small class="text-muted text-uppercase" style="font-size: 0.7rem; letter-spacing: 1px;">Entries</small>
+                    </div>
+                    <div class="text-center">
+                        <h4 class="fw-bold mb-0" style="color: #1a4d2e;">{{ $receivedLikesCount }}</h4>
+                        <small class="text-muted text-uppercase" style="font-size: 0.7rem; letter-spacing: 1px;">Appreciation</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex mb-4 border-bottom px-3 gap-4">
+                <a href="{{ route('users.show', ['user' => $user->id, 'tab' => 'tweets']) }}" 
+                   class="text-decoration-none pb-3 fw-bold small text-uppercase {{ $tab == 'tweets' ? 'border-bottom border-2 border-dark text-dark' : 'text-muted' }}"
+                   style="letter-spacing: 0.5px; transition: all 0.2s;">
+                   Entries
+                </a>
+                <a href="{{ route('users.show', ['user' => $user->id, 'tab' => 'likes']) }}" 
+                   class="text-decoration-none pb-3 fw-bold small text-uppercase {{ $tab == 'likes' ? 'border-bottom border-2 border-dark text-dark' : 'text-muted' }}"
+                   style="letter-spacing: 0.5px; transition: all 0.2s;">
+                   Liked
+                </a>
+            </div>
+
+            @forelse ($tweets as $tweet)
+                <div class="modern-card p-4">
+                    <div class="d-flex gap-3">
+                        <a href="{{ route('users.show', $tweet->user) }}" class="text-decoration-none">
+                            <div class="rounded-1 bg-dark text-white d-flex align-items-center justify-content-center flex-shrink-0" 
+                                 style="width: 48px; height: 48px; font-family: 'Merriweather', serif; font-weight: 700; font-size: 1.2rem;">
+                                {{ substr($tweet->user->name, 0, 1) }}
+                            </div>
+                        </a>
+
+                        <div class="w-100">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <div class="d-flex align-items-baseline gap-2">
+                                    <a href="{{ route('users.show', $tweet->user) }}" class="text-decoration-none text-dark fw-bold" style="font-family: 'Merriweather', serif;">
+                                        {{ $tweet->user->name }}
                                     </a>
-                                </li>
-                                <li>
-                                    <form action="{{ route('tweets.destroy', $tweet) }}" method="POST" onsubmit="return confirm('Delete this post?');">
-                                        @csrf @method('DELETE')
-                                        <button type="submit" class="dropdown-item text-danger d-flex align-items-center gap-2">
-                                            <x-heroicon-s-trash style="width: 16px;" /> Delete
+                                    <span class="text-muted small" style="font-size: 0.85rem;">
+                                        · {{ $tweet->created_at->diffForHumans() }}
+                                    </span>
+                                </div>
+                                
+                                @if (Auth::id() === $tweet->user_id)
+                                     <div class="dropdown">
+                                        <button class="btn btn-link text-muted p-0 text-decoration-none" data-bs-toggle="dropdown">
+                                            <x-heroicon-m-ellipsis-horizontal style="width: 20px;" />
                                         </button>
-                                    </form>
-                                </li>
-                            </ul>
+                                        <ul class="dropdown-menu dropdown-menu-end border shadow-sm rounded-1">
+                                            <li><a class="dropdown-item small" href="{{ route('tweets.edit', $tweet) }}">Edit</a></li>
+                                            <li>
+                                                <form action="{{ route('tweets.destroy', $tweet) }}" method="POST" onsubmit="return confirm('Delete?');">
+                                                    @csrf @method('DELETE')
+                                                    <button class="dropdown-item small text-danger">Delete</button>
+                                                </form>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                @endif
+                            </div>
+
+                            <p class="mb-3 text-dark fs-5" style="line-height: 1.7;">
+                                {{ $tweet->content }}
+                            </p>
+
+                            <div class="d-flex align-items-center gap-4 border-top pt-3" style="border-color: #f5f5f4 !important;">
+                                @php $userHasLiked = $tweet->likes->contains('user_id', Auth::id()); @endphp
+                                <button 
+                                    onclick="toggleLike(this, {{ $tweet->id }})"
+                                    class="btn p-0 text-decoration-none d-flex align-items-center gap-2 like-btn {{ $userHasLiked ? 'text-danger' : 'text-muted' }}"
+                                    style="border: none; background: none;">
+                                    <div class="icon-outline {{ $userHasLiked ? 'd-none' : '' }}">
+                                        <x-heroicon-o-heart style="width: 20px;" />
+                                    </div>
+                                    <div class="icon-solid {{ $userHasLiked ? '' : 'd-none' }}">
+                                        <x-heroicon-s-heart style="width: 20px;" />
+                                    </div>
+                                    <span class="small font-monospace like-count">{{ $tweet->likes_count }}</span>
+                                </button>
+                            </div>
                         </div>
+                    </div>
+                </div>
+            @empty
+                <div class="text-center py-5 text-muted">
+                    <x-heroicon-o-document-text style="width: 48px; opacity: 0.5;" class="mx-auto mb-3" />
+                    @if($tab == 'likes')
+                        <h5>No liked entries yet</h5>
+                        <p class="small">Tap the heart on posts you appreciate.</p>
+                    @else
+                        <h5>No entries yet</h5>
+                        <p class="small">This user hasn't published anything.</p>
                     @endif
                 </div>
-
-                <p class="mb-2 text-dark" style="font-size: 15px; line-height: 1.5;">{{ $tweet->content }}</p>
-
-                <div class="d-flex align-items-center mt-2">
-                    <form action="{{ route('tweets.like', $tweet) }}" method="POST">
-                        @csrf
-                        @php $userHasLiked = $tweet->likes->contains('user_id', Auth::id()); @endphp
-                        
-                        <button type="submit" class="btn btn-link p-0 text-decoration-none d-flex align-items-center gap-2 {{ $userHasLiked ? 'text-danger' : 'text-muted' }}">
-                            @if($userHasLiked)
-                                <x-heroicon-s-heart style="width: 20px;" />
-                            @else
-                                <x-heroicon-o-heart style="width: 20px;" />
-                            @endif
-                            
-                            <span class="small" style="font-weight: 500;">
-                                {{ $tweet->likes_count > 0 ? $tweet->likes_count : '' }}
-                            </span>
-                        </button>
-                    </form>
-                </div>
-            </div>
+            @endforelse
         </div>
-    @empty
-        <div class="p-5 text-center text-muted">
-            <div class="mb-3 d-flex justify-content-center opacity-50">
-                <x-heroicon-o-chat-bubble-left-right style="width: 48px; height: 48px;" />
-            </div>
-            <h5 class="fw-bold text-dark">No tweets yet</h5>
-            <p class="small">When {{ $user->name }} posts, you'll see it here.</p>
-        </div>
-    @endforelse
+    </div>
 </x-app-layout>
