@@ -29,7 +29,9 @@
             <div class="card-body">
                 <div class="d-flex justify-content-between">
                     <h6 class="card-subtitle mb-2 text-muted fw-bold">
-                        {{ $tweet->user->name }} 
+                        <a href="{{ route('users.show', $tweet->user) }}" class="text-decoration-none text-dark">
+                            {{ $tweet->user->name }}
+                        </a>
                         <span class="fw-normal small text-muted">· {{ $tweet->created_at->diffForHumans() }}</span>
                         @if($tweet->is_edited)
                             <span class="small text-muted fst-italic" title="Edited"> (edited)</span>

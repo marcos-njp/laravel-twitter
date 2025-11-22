@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TweetController;
 use App\Http\Controllers\LikeController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth; // <--- ADD THIS IMPORT
 
@@ -19,6 +20,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     // Like System Route
     Route::post('/tweets/{tweet}/like', [LikeController::class, 'store'])->name('tweets.like');
+    // Public User Profile (Display stats and tweets)
+    Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
 });
 
 require __DIR__ . '/auth.php';
