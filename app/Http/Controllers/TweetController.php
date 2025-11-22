@@ -13,40 +13,39 @@ class TweetController extends Controller
     // Display all tweets (Newest first)
     public function index(Request $request): View
     {
-        // 1. Get the sort preference (default to 'newest')
         $sortDirection = $request->query('sort', 'newest');
 
-        // 2. Build the query
         $query = Tweet::with('user', 'likes')
             ->withCount('likes');
 
-        // 3. Apply sorting logic
         if ($sortDirection === 'oldest') {
-            $query->oldest(); // Order by created_at ASC
+            $query->oldest();
         } else {
-            $query->latest(); // Order by created_at DESC (Default)
+            $query->latest();
         }
 
         $tweets = $query->get();
 
-        // 4. Pass the current sort to the view so we can style the button
-        return view('tweets.index', compact('tweets', 'sortDirection'));
+        // NEW: Fetch last 5 users for the dynamic sidebar
+        $newestUsers = \App\Models\User::latest()->take(5)->get();
+
+        return view('tweets.index', compact('tweets', 'sortDirection', 'newestUsers'));
     }
 
     // Store a new tweet
     public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
-              'content' => ['required', 'string', 'max:280'], // Strict 280 char limit
+            'content' => ['required', 'string', 'max:280'], // Strict 280 char limit
         ]);
 
         // Create tweet associated with current user
-           // Ensure only the validated content is stored, with user_id and timestamp
-           $tweet = new \App\Models\Tweet();
-           $tweet->content = $validated['content'];
-           $tweet->user_id = $request->user()->id;
-           $tweet->created_at = now();
-           $tweet->save();
+        // Ensure only the validated content is stored, with user_id and timestamp
+        $tweet = new \App\Models\Tweet();
+        $tweet->content = $validated['content'];
+        $tweet->user_id = $request->user()->id;
+        $tweet->created_at = now();
+        $tweet->save();
 
         return redirect()->route('tweets.index')->with('success', 'Tweet posted!');
     }
