@@ -1,96 +1,142 @@
 <x-app-layout>
-    <div class="container py-4">
-        <h2 class="fw-bold mb-4">Account Settings</h2>
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            
+            <div class="d-flex align-items-center gap-3 mb-4">
+                <a href="{{ route('users.show', Auth::user()) }}" 
+                   class="btn btn-white bg-white border shadow-sm rounded-circle p-2 d-flex align-items-center justify-content-center text-dark"
+                   style="width: 40px; height: 40px;">
+                    <x-heroicon-m-arrow-left style="width: 20px;" />
+                </a>
+                <h2 class="fw-bold mb-0" style="font-family: 'Merriweather', serif;">Account Settings</h2>
+            </div>
 
-        <div class="row g-4">
-            <div class="col-md-6">
-                <div class="card shadow-sm border-0">
-                    <div class="card-header bg-white fw-bold py-3">Profile Information</div>
-                    <div class="card-body">
+            <div class="row g-5" x-data="{ tab: 'profile', showPass: false }">
+                
+                <div class="col-md-4 col-lg-3">
+                    <div class="list-group list-group-flush sticky-top" style="top: 100px;">
+                        <button @click="tab = 'profile'" 
+                            :class="tab === 'profile' ? 'text-dark fw-bold border-start border-3 border-success ps-3' : 'text-muted ps-3 border-start border-3 border-transparent'"
+                            class="list-group-item list-group-item-action py-2 px-0 bg-transparent d-flex align-items-center gap-2 border-0 mb-2"
+                            style="border-color: #1a4d2e !important; transition: all 0.2s;">
+                            Profile Details
+                        </button>
+                        
+                        <button @click="tab = 'security'" 
+                            :class="tab === 'security' ? 'text-dark fw-bold border-start border-3 border-success ps-3' : 'text-muted ps-3 border-start border-3 border-transparent'"
+                            class="list-group-item list-group-item-action py-2 px-0 bg-transparent d-flex align-items-center gap-2 border-0 mb-2"
+                            style="border-color: #1a4d2e !important; transition: all 0.2s;">
+                            Password
+                        </button>
+                        
+                        <button @click="tab = 'danger'" 
+                            :class="tab === 'danger' ? 'text-danger fw-bold border-start border-3 border-danger ps-3' : 'text-danger text-opacity-75 ps-3 border-start border-3 border-transparent'"
+                            class="list-group-item list-group-item-action py-2 px-0 bg-transparent d-flex align-items-center gap-2 border-0">
+                            Delete Account
+                        </button>
+                    </div>
+                </div>
+
+                <div class="col-md-8 col-lg-9">
+                    
+                    <div x-show="tab === 'profile'" x-transition.opacity class="modern-card p-5">
+                        <h4 class="fw-bold mb-1" style="font-family: 'Merriweather', serif;">Profile Information</h4>
+                        <p class="text-muted small mb-4 border-bottom pb-3">Update your public profile details.</p>
+
                         <form method="post" action="{{ route('profile.update') }}">
                             @csrf
                             @method('patch')
 
-                            <div class="mb-3">
-                                <label for="name" class="form-label">Name</label>
-                                <input type="text" name="name" id="name" class="form-control" value="{{ old('name', $user->name) }}" required>
+                            <div class="mb-4">
+                                <label class="form-label fw-bold small text-uppercase text-muted" style="font-family: 'Inter', sans-serif; letter-spacing: 0.5px;">Display Name</label>
+                                <input type="text" name="name" class="form-control" value="{{ old('name', $user->name) }}" required>
                                 @error('name') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
                             </div>
 
-                            <div class="mb-3">
-                                <label for="email" class="form-label">Email</label>
-                                <input type="email" name="email" id="email" class="form-control" value="{{ old('email', $user->email) }}" required>
+                            <div class="mb-4">
+                                <label class="form-label fw-bold small text-uppercase text-muted" style="font-family: 'Inter', sans-serif; letter-spacing: 0.5px;">Email Address</label>
+                                <input type="email" name="email" class="form-control" value="{{ old('email', $user->email) }}" required>
                                 @error('email') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
                             </div>
 
-                            <div class="mb-3">
-                                <label for="bio" class="form-label">Bio <small class="text-muted">(Optional)</small></label>
-                                <textarea name="bio" id="bio" class="form-control" rows="3" maxlength="160">{{ old('bio', $user->bio) }}</textarea>
-                                <div class="form-text">Tell the world about yourself. Max 160 characters.</div>
+                            <div class="mb-4">
+                                <label class="form-label fw-bold small text-uppercase text-muted" style="font-family: 'Inter', sans-serif; letter-spacing: 0.5px;">Bio <span class="fw-normal text-lowercase">(optional)</span></label>
+                                <textarea name="bio" class="form-control" rows="4" maxlength="160">{{ old('bio', $user->bio) }}</textarea>
+                                <div class="form-text">Tell the world about yourself. Max 160 chars.</div>
                                 @error('bio') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
                             </div>
 
-                            <button type="submit" class="btn btn-primary px-4">Save Changes</button>
-
-                            @if (session('status') === 'profile-updated')
-                                <span class="text-success ms-2 small fw-bold fade-out">Saved successfully.</span>
-                            @endif
+                            <div class="d-flex justify-content-end align-items-center gap-3">
+                                @if (session('status') === 'profile-updated')
+                                    <span x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 2000)" class="text-success fw-bold small">Saved</span>
+                                @endif
+                                <button type="submit" class="btn btn-primary px-4">Save Changes</button>
+                            </div>
                         </form>
                     </div>
-                </div>
-            </div>
 
-            <div class="col-md-6">
-                <div class="card shadow-sm border-0 mb-4">
-                    <div class="card-header bg-white fw-bold py-3">Update Password</div>
-                    <div class="card-body">
+                    <div x-show="tab === 'security'" x-transition.opacity class="modern-card p-5" style="display: none;">
+                        <h4 class="fw-bold mb-1" style="font-family: 'Merriweather', serif;">Update Password</h4>
+                        <p class="text-muted small mb-4 border-bottom pb-3">Ensure your account is using a long, random password.</p>
+
                         <form method="post" action="{{ route('password.update') }}">
                             @csrf
                             @method('put')
 
                             <div class="mb-3">
-                                <label for="current_password" class="form-label">Current Password</label>
-                                <input type="password" name="current_password" id="current_password" class="form-control">
+                                <label class="form-label fw-bold small text-uppercase text-muted" style="font-family: 'Inter', sans-serif; letter-spacing: 0.5px;">Current Password</label>
+                                <div class="position-relative">
+                                    <input :type="showPass ? 'text' : 'password'" name="current_password" class="form-control pe-5">
+                                    <button type="button" @click="showPass = !showPass" class="btn btn-link position-absolute top-0 end-0 text-muted text-decoration-none">
+                                        <span x-show="!showPass" class="small">Show</span>
+                                        <span x-show="showPass" class="small">Hide</span>
+                                    </button>
+                                </div>
                                 @error('current_password', 'updatePassword') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
                             </div>
 
                             <div class="mb-3">
-                                <label for="password" class="form-label">New Password</label>
-                                <input type="password" name="password" id="password" class="form-control">
+                                <label class="form-label fw-bold small text-uppercase text-muted" style="font-family: 'Inter', sans-serif; letter-spacing: 0.5px;">New Password</label>
+                                <input :type="showPass ? 'text' : 'password'" name="password" class="form-control">
                                 @error('password', 'updatePassword') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
                             </div>
 
-                            <div class="mb-3">
-                                <label for="password_confirmation" class="form-label">Confirm New Password</label>
-                                <input type="password" name="password_confirmation" id="password_confirmation" class="form-control">
+                            <div class="mb-4">
+                                <label class="form-label fw-bold small text-uppercase text-muted" style="font-family: 'Inter', sans-serif; letter-spacing: 0.5px;">Confirm New Password</label>
+                                <input :type="showPass ? 'text' : 'password'" name="password_confirmation" class="form-control">
                             </div>
 
-                            <button type="submit" class="btn btn-dark px-4">Update Password</button>
-
-                            @if (session('status') === 'password-updated')
-                                <span class="text-success ms-2 small fw-bold fade-out">Saved.</span>
-                            @endif
+                            <div class="d-flex justify-content-end align-items-center gap-3">
+                                @if (session('status') === 'password-updated')
+                                    <span x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 2000)" class="text-success fw-bold small">Updated</span>
+                                @endif
+                                <button type="submit" class="btn btn-dark px-4">Update Password</button>
+                            </div>
                         </form>
                     </div>
-                </div>
 
-                <div class="card border-danger shadow-sm">
-                    <div class="card-header bg-danger text-white fw-bold py-3">Danger Zone</div>
-                    <div class="card-body">
-                        <h6 class="fw-bold text-danger">Delete Account</h6>
-                        <p class="small text-muted">Once your account is deleted, all of its resources and data will be permanently deleted. This action cannot be undone.</p>
+                    <div x-show="tab === 'danger'" x-transition.opacity class="modern-card p-5 border border-danger border-opacity-25" style="display: none;">
+                        <h4 class="fw-bold mb-1 text-danger" style="font-family: 'Merriweather', serif;">Delete Account</h4>
+                        <p class="text-danger text-opacity-75 small mb-4 border-bottom border-danger border-opacity-25 pb-3">Permanently remove your account and data.</p>
+
+                        <div class="alert alert-danger border-0 mb-4">
+                            <strong>Warning: This is irreversible.</strong>
+                            <p class="mb-0 small mt-1">All tweets, likes, and profile data will be wiped.</p>
+                        </div>
                         
-                        <form method="post" action="{{ route('profile.destroy') }}" onsubmit="return confirm('Are you sure you want to delete your account? This IS PERMANENT.');">
-                            @csrf
-                            @method('delete')
-                            
-                            <div class="input-group mb-3">
-                                <input type="password" name="password" class="form-control" placeholder="Enter password to confirm" required>
-                                <button class="btn btn-outline-danger" type="button" onclick="this.form.submit()">Delete Account</button>
+                        <form method="post" action="{{ route('profile.destroy') }}" onsubmit="return confirm('Are you sure?');">
+                            @csrf @method('delete')
+                            <div class="mb-3">
+                                <label class="form-label fw-bold small text-uppercase text-danger" style="font-family: 'Inter', sans-serif;">Confirm Password</label>
+                                <input type="password" name="password" class="form-control border-danger" required>
+                                @error('password', 'userDeletion') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
                             </div>
-                            @error('password', 'userDeletion') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
+                            <div class="d-flex justify-content-end">
+                                <button type="submit" class="btn btn-outline-danger px-4">Delete Account</button>
+                            </div>
                         </form>
                     </div>
+
                 </div>
             </div>
         </div>
