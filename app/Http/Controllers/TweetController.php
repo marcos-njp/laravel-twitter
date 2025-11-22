@@ -26,8 +26,11 @@ class TweetController extends Controller
 
         $tweets = $query->get();
 
-        // NEW: Fetch last 5 users for the dynamic sidebar
-        $newestUsers = \App\Models\User::latest()->take(5)->get();
+        // UPDATE: Fetch 'tweets_count' to show activity level in sidebar
+        $newestUsers = \App\Models\User::withCount('tweets')
+            ->latest()
+            ->take(5)
+            ->get();
 
         return view('tweets.index', compact('tweets', 'sortDirection', 'newestUsers'));
     }
