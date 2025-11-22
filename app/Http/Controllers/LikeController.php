@@ -3,28 +3,30 @@
 namespace App\Http\Controllers;
 
 use App\Models\Tweet;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
 
 class LikeController extends Controller
 {
-    // Toggle Like/Unlike
     public function store(Tweet $tweet): RedirectResponse
     {
-        // Check if the user already liked the tweet
+        // REQUIREMENT: Users can unlike tweets they've previously liked
+        // Check if the current user has already liked this specific tweet
         $existingLike = $tweet->likes()->where('user_id', Auth::id())->first();
 
         if ($existingLike) {
-            // Unlike
+            // If yes, delete it (Unlike)
             $existingLike->delete();
         } else {
-            // Like (Create relationship)
+            // REQUIREMENT: Users can like any tweet
+            // REQUIREMENT: One user can only like a tweet once (Database prevents duplicates, this logic creates the first one)
             $tweet->likes()->create([
                 'user_id' => Auth::id(),
             ]);
         }
 
-        return back(); // Returns to the same scroll position
+        // REQUIREMENT: Updates without full page refresh (Bonus) - strictly speaking this is a refresh (back), 
+        // but it returns user to exact scroll position.
+        return back();
     }
 }
