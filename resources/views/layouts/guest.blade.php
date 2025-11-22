@@ -15,7 +15,7 @@
             <div class="col-md-5">
                 <div class="text-center mb-4">
                     <a href="/" class="text-decoration-none">
-                        <h1 class="fw-bold text-primary">TwitterClone</h1>
+                        <h1 class="fw-bold text-primary" style="font-family: sans-serif; letter-spacing: -1px;">Birdie</h1>
                     </a>
                 </div>
 
