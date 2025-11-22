@@ -1,3 +1,4 @@
+
 <x-app-layout>
     <div class="row justify-content-center g-5">
         
@@ -64,7 +65,7 @@
             </div>
 
             @foreach ($tweets as $tweet)
-                <div class="modern-card p-4 {{ Auth::id() === $tweet->user_id ? 'border-start border-4 border-success' : '' }}">
+                <div class="modern-card p-4">
                     <div class="d-flex gap-3">
                         <a href="{{ route('users.show', $tweet->user) }}" class="text-decoration-none">
                             <div class="rounded-1 bg-dark text-white d-flex align-items-center justify-content-center flex-shrink-0" 
@@ -142,27 +143,43 @@
         </div>
 
         <div class="col-lg-4 d-none d-lg-block">
-            <div class="sticky-top" style="top: 100px; z-index: 1;"> <div class="modern-card p-4">
-                    <h6 class="fw-bold text-dark mb-3" style="font-family: 'Merriweather', serif;">Community Members</h6>
-                    <div class="d-flex flex-column gap-3">
+            <div class="sticky-top" style="top: 100px; z-index: 1;">
+                
+                <div class="modern-card p-4">
+                    <h6 class="fw-bold text-dark mb-4" style="font-family: 'Merriweather', serif;">Community Members</h6>
+                    <div class="d-flex flex-column gap-4">
                         @foreach($newestUsers as $user)
-                            <div class="d-flex align-items-center gap-2">
-                                <div class="rounded-circle bg-light text-muted d-flex align-items-center justify-content-center border" 
-                                     style="width: 36px; height: 36px; font-weight: bold; font-size: 0.9rem;">
-                                    {{ substr($user->name, 0, 1) }}
-                                </div>
-                                <div class="d-flex flex-column" style="line-height: 1.1;">
+                            <div class="d-flex align-items-start gap-3">
+                                <a href="{{ route('users.show', $user) }}" class="text-decoration-none">
+                                    <div class="rounded-circle bg-light text-muted d-flex align-items-center justify-content-center border" 
+                                         style="width: 40px; height: 40px; font-weight: bold; font-size: 1rem;">
+                                        {{ substr($user->name, 0, 1) }}
+                                    </div>
+                                </a>
+                                <div class="d-flex flex-column" style="line-height: 1.2;">
                                     <a href="{{ route('users.show', $user) }}" class="text-decoration-none text-dark fw-bold small">
                                         {{ $user->name }}
                                     </a>
-                                    <small class="text-muted" style="font-size: 0.75rem;">Joined {{ $user->created_at->format('M Y') }}</small>
+                                    <div class="d-flex align-items-center gap-2 mt-1">
+                                        <span class="badge bg-light text-dark border" style="font-size: 0.65rem; font-weight: 600;">
+                                            {{ $user->tweets_count }} Entries
+                                        </span>
+                                        <small class="text-muted" style="font-size: 0.7rem;">Joined {{ $user->created_at->format('M d') }}</small>
+                                    </div>
+                                    
+                                    @if($user->bio)
+                                        <p class="small text-muted mt-2 mb-0 fst-italic opacity-75" style="font-size: 0.75rem;">
+                                            "{{ Str::limit($user->bio, 45) }}"
+                                        </p>
+                                    @endif
                                 </div>
                             </div>
                         @endforeach
                     </div>
-                    <div class="mt-3 pt-3 border-top text-center">
-                        <a href="#" class="text-decoration-none text-muted small">View all members</a>
-                    </div>
+                    
+                    @if($newestUsers->isEmpty())
+                        <p class="text-muted small fst-italic">No members yet.</p>
+                    @endif
                 </div>
 
             </div>
