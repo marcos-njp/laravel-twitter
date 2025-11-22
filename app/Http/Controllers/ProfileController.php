@@ -28,6 +28,18 @@ class ProfileController extends Controller
     {
         $request->user()->fill($request->validated());
 
+        // LOGIC: Handle Avatar Upload
+        if ($request->hasFile('avatar')) {
+            // Validation is handled in the request or here inline for simplicity
+            $request->validate([
+                'avatar' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            ]);
+
+            // Store in public/avatars
+            $path = $request->file('avatar')->store('avatars', 'public');
+            $request->user()->avatar = $path;
+        }
+
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
         }
