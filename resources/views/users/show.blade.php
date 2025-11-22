@@ -4,10 +4,17 @@
             
             <div class="modern-card p-5 text-center mb-4 position-relative">
                 
-                <div class="rounded-circle bg-dark text-white d-flex align-items-center justify-content-center shadow-sm mx-auto mb-3" 
-                     style="width: 90px; height: 90px; font-family: 'Merriweather', serif; font-weight: 700; font-size: 2.5rem;">
-                    {{ substr($user->name, 0, 1) }}
-                </div>
+
+                @if($user->avatar)
+                    <img src="{{ asset('storage/' . $user->avatar) }}" alt="Profile Avatar" 
+                         class="rounded-circle object-fit-cover shadow-sm mx-auto mb-3 border border-3 border-white" 
+                         style="width: 100px; height: 100px;">
+                @else
+                    <div class="rounded-circle bg-dark text-white d-flex align-items-center justify-content-center shadow-sm mx-auto mb-3" 
+                         style="width: 90px; height: 90px; font-family: 'Merriweather', serif; font-weight: 700; font-size: 2.5rem;">
+                        {{ substr($user->name, 0, 1) }}
+                    </div>
+                @endif
 
                 <h3 class="fw-bold mb-1" style="font-family: 'Merriweather', serif;">{{ $user->name }}</h3>
                 <p class="text-muted small mb-4">Joined {{ $user->created_at->format('F Y') }}</p>
