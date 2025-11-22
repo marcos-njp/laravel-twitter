@@ -30,22 +30,38 @@
                             <li class="nav-item"><a class="btn btn-primary btn-sm rounded-pill ms-2 px-3" href="{{ route('register') }}">Sign up</a></li>
                         @else
                             <li class="nav-item me-3">
-                                <a href="{{ route('tweets.index') }}" class="nav-link {{ request()->routeIs('tweets.index') ? 'text-dark fw-bold' : 'text-muted' }}">
-                                    🏠 Home
+                                <a href="{{ route('tweets.index') }}" class="nav-link d-flex align-items-center gap-2 {{ request()->routeIs('tweets.index') ? 'text-dark fw-bold' : 'text-muted' }}">
+                                    @if(request()->routeIs('tweets.index'))
+                                        <x-heroicon-s-home style="width: 24px; height: 24px;" />
+                                    @else
+                                        <x-heroicon-o-home style="width: 24px; height: 24px;" />
+                                    @endif
+                                    <span class="d-none d-lg-inline">Home</span>
                                 </a>
                             </li>
                             <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link fw-bold text-dark dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                                    👤 {{ Auth::user()->name }}
+                                <a id="navbarDropdown" class="nav-link d-flex align-items-center gap-2 fw-bold text-dark dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                    <x-heroicon-o-user-circle style="width: 24px; height: 24px;" />
+                                    {{ Auth::user()->name }}
                                 </a>
-                                <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-4 mt-2">
-                                    <li><a class="dropdown-item py-2" href="{{ route('users.show', Auth::user()) }}">Profile</a></li>
-                                    <li><a class="dropdown-item py-2" href="{{ route('profile.edit') }}">Settings</a></li>
+                                <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-4 mt-2 p-2">
+                                    <li>
+                                        <a class="dropdown-item py-2 d-flex align-items-center gap-2 rounded" href="{{ route('users.show', Auth::user()) }}">
+                                            <x-heroicon-o-user style="width: 20px;" /> Profile
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item py-2 d-flex align-items-center gap-2 rounded" href="{{ route('profile.edit') }}">
+                                            <x-heroicon-o-cog-6-tooth style="width: 20px;" /> Settings
+                                        </a>
+                                    </li>
                                     <li><hr class="dropdown-divider"></li>
                                     <li>
                                         <form method="POST" action="{{ route('logout') }}">
                                             @csrf
-                                            <button type="submit" class="dropdown-item text-danger py-2">Logout</button>
+                                            <button type="submit" class="dropdown-item text-danger py-2 d-flex align-items-center gap-2 rounded">
+                                                <x-heroicon-o-arrow-right-on-rectangle style="width: 20px;" /> Logout
+                                            </button>
                                         </form>
                                     </li>
                                 </ul>

@@ -38,26 +38,26 @@
         <span class="small fw-bold text-muted">Timeline</span>
         
         <div class="dropdown">
-            <button class="btn btn-sm btn-light border-0 dropdown-toggle fw-bold text-dark d-flex align-items-center gap-2" 
+            <button class="btn btn-sm btn-light border-0 dropdown-toggle fw-bold text-muted d-flex align-items-center gap-2" 
                     type="button" 
                     data-bs-toggle="dropdown">
                 @if($sortDirection === 'oldest')
-                    <span>⬆️ Oldest First</span>
+                    <x-heroicon-m-bars-arrow-up style="width: 18px;" /> Oldest First
                 @else
-                    <span>⬇️ Newest First</span>
+                    <x-heroicon-m-bars-arrow-down style="width: 18px;" /> Newest First
                 @endif
             </button>
             <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0">
                 <li>
-                    <a class="dropdown-item {{ $sortDirection === 'newest' ? 'active fw-bold' : '' }}" 
+                    <a class="dropdown-item d-flex align-items-center gap-2 {{ $sortDirection === 'newest' ? 'active fw-bold' : '' }}" 
                        href="{{ route('tweets.index', ['sort' => 'newest']) }}">
-                       ⬇️ Newest First
+                       <x-heroicon-s-bars-arrow-down style="width: 18px;" /> Newest First
                     </a>
                 </li>
                 <li>
-                    <a class="dropdown-item {{ $sortDirection === 'oldest' ? 'active fw-bold' : '' }}" 
+                    <a class="dropdown-item d-flex align-items-center gap-2 {{ $sortDirection === 'oldest' ? 'active fw-bold' : '' }}" 
                        href="{{ route('tweets.index', ['sort' => 'oldest']) }}">
-                       ⬆️ Oldest First
+                       <x-heroicon-s-bars-arrow-up style="width: 18px;" /> Oldest First
                     </a>
                 </li>
             </ul>
@@ -67,7 +67,7 @@
     @foreach ($tweets as $tweet)
         <div class="tweet-item p-3 d-flex gap-3 border-bottom">
             <a href="{{ route('users.show', $tweet->user) }}" class="text-decoration-none">
-                <div class="rounded-circle bg-light text-secondary d-flex align-items-center justify-content-center flex-shrink-0 border" style="width: 48px; height: 48px; font-size: 1.2rem;">
+                <div class="rounded-circle bg-light text-secondary d-flex align-items-center justify-content-center flex-shrink-0 border" style="width: 48px; height: 48px; font-weight: bold;">
                     {{ substr($tweet->user->name, 0, 1) }}
                 </div>
             </a>
@@ -80,19 +80,29 @@
                         </a>
                         <span class="text-muted small">@ {{ strtolower(str_replace(' ', '', $tweet->user->name)) }} · {{ $tweet->created_at->diffForHumans(null, true, true) }}</span>
                         @if($tweet->is_edited)
-                            <span class="small text-muted" title="Edited">✎</span>
+                            <span class="text-muted" title="Edited">
+                                <x-heroicon-m-pencil-square style="width: 14px;" />
+                            </span>
                         @endif
                     </div>
 
                     @if (Auth::id() === $tweet->user_id)
                         <div class="dropdown">
-                            <button class="btn btn-link text-muted p-0 text-decoration-none fs-5" style="line-height: 0.5;" data-bs-toggle="dropdown">...</button>
+                            <button class="btn btn-link text-muted p-0" style="line-height: 0;" data-bs-toggle="dropdown">
+                                <x-heroicon-m-ellipsis-horizontal style="width: 20px;" />
+                            </button>
                             <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0">
-                                <li><a class="dropdown-item" href="{{ route('tweets.edit', $tweet) }}">Edit Post</a></li>
+                                <li>
+                                    <a class="dropdown-item d-flex align-items-center gap-2" href="{{ route('tweets.edit', $tweet) }}">
+                                        <x-heroicon-s-pencil style="width: 16px;" /> Edit Post
+                                    </a>
+                                </li>
                                 <li>
                                     <form action="{{ route('tweets.destroy', $tweet) }}" method="POST" onsubmit="return confirm('Delete this post?');">
                                         @csrf @method('DELETE')
-                                        <button type="submit" class="dropdown-item text-danger">Delete</button>
+                                        <button type="submit" class="dropdown-item text-danger d-flex align-items-center gap-2">
+                                            <x-heroicon-s-trash style="width: 16px;" /> Delete
+                                        </button>
                                     </form>
                                 </li>
                             </ul>
@@ -106,9 +116,17 @@
                     <form action="{{ route('tweets.like', $tweet) }}" method="POST">
                         @csrf
                         @php $userHasLiked = $tweet->likes->contains('user_id', Auth::id()); @endphp
+                        
                         <button type="submit" class="btn btn-link p-0 text-decoration-none d-flex align-items-center gap-2 {{ $userHasLiked ? 'text-danger' : 'text-muted' }}">
-                            <span style="font-size: 1.2rem;">{{ $userHasLiked ? '♥' : '♡' }}</span>
-                            <span class="small">{{ $tweet->likes_count > 0 ? $tweet->likes_count : '' }}</span>
+                            @if($userHasLiked)
+                                <x-heroicon-s-heart style="width: 20px;" />
+                            @else
+                                <x-heroicon-o-heart style="width: 20px;" />
+                            @endif
+                            
+                            <span class="small" style="font-weight: 500;">
+                                {{ $tweet->likes_count > 0 ? $tweet->likes_count : '' }}
+                            </span>
                         </button>
                     </form>
                 </div>
