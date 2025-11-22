@@ -7,10 +7,9 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth; // <--- ADD THIS IMPORT
 
-// Redirect root to the tweet feed if logged in, otherwise login page
+// FIX: Show Landing Page for guests, Feed for logged-in users
 Route::get('/', function () {
-    // Changed auth()->check() to Auth::check()
-    return Auth::check() ? redirect()->route('tweets.index') : view('auth.login');
+    return Auth::check() ? redirect()->route('tweets.index') : view('welcome');
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -22,6 +21,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/tweets/{tweet}/like', [LikeController::class, 'store'])->name('tweets.like');
     // Public User Profile (Display stats and tweets)
     Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
+    
 });
 
 require __DIR__ . '/auth.php';
