@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
@@ -10,10 +11,10 @@
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md sticky-top py-3">
+        <nav class="navbar navbar-expand-md sticky-top">
             <div class="container">
-                <a class="navbar-brand fw-bold text-primary fs-3 d-flex align-items-center gap-2" href="{{ route('tweets.index') }}">
-                    <x-heroicon-s-paper-airplane style="width: 28px; transform: rotate(-45deg);" /> Birdie
+                <a class="navbar-brand fw-bold fs-2 d-flex align-items-center gap-2" href="{{ route('tweets.index') }}" style="letter-spacing: -1px; color: #1a4d2e;">
+                    <x-heroicon-s-book-open style="width: 28px;" /> Birdie.
                 </a>
                 
                 <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navContent">
@@ -21,32 +22,27 @@
                 </button>
 
                 <div class="collapse navbar-collapse" id="navContent">
-                    <ul class="navbar-nav ms-auto align-items-center gap-3">
+                    <ul class="navbar-nav ms-auto align-items-center gap-4">
                         @guest
-                            <li class="nav-item"><a class="nav-link" href="{{ route('login') }}">Log in</a></li>
-                            <li class="nav-item"><a class="btn btn-primary rounded-pill" href="{{ route('register') }}">Get Started</a></li>
+                            <li class="nav-item"><a class="nav-link text-uppercase small ls-1" href="{{ route('login') }}">Log in</a></li>
+                            <li class="nav-item"><a class="btn btn-primary" href="{{ route('register') }}">Subscribe</a></li>
                         @else
                             <li class="nav-item">
-                                <a href="{{ route('tweets.index') }}" class="nav-link {{ request()->routeIs('tweets.index') ? 'active' : '' }}">
-                                    Feed
+                                <a href="{{ route('tweets.index') }}" class="nav-link d-flex align-items-center gap-2 {{ request()->routeIs('tweets.index') ? 'active' : '' }}">
+                                    <x-heroicon-o-home style="width: 20px;" /> Feed
                                 </a>
                             </li>
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="#" role="button" data-bs-toggle="dropdown">
-                                    <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" 
-                                         style="width: 32px; height: 32px; font-size: 0.9rem;">
-                                        {{ substr(Auth::user()->name, 0, 1) }}
-                                    </div>
-                                    <span>{{ Auth::user()->name }}</span>
+                                <a class="nav-link dropdown-toggle d-flex align-items-center gap-2 text-dark fw-bold" href="#" role="button" data-bs-toggle="dropdown">
+                                    {{ Auth::user()->name }}
                                 </a>
-                                <ul class="dropdown-menu dropdown-menu-end border-0 shadow-lg rounded-4 p-2 mt-2">
-                                    <li><a class="dropdown-item rounded-3 py-2" href="{{ route('users.show', Auth::user()) }}">My Profile</a></li>
-                                    <li><a class="dropdown-item rounded-3 py-2" href="{{ route('profile.edit') }}">Settings</a></li>
-                                    <li><hr class="dropdown-divider"></li>
+                                <ul class="dropdown-menu dropdown-menu-end border shadow-sm rounded-1 p-0 mt-2">
+                                    <li><a class="dropdown-item py-3 px-4 border-bottom" href="{{ route('users.show', Auth::user()) }}">My Profile</a></li>
+                                    <li><a class="dropdown-item py-3 px-4 border-bottom" href="{{ route('profile.edit') }}">Settings</a></li>
                                     <li>
                                         <form method="POST" action="{{ route('logout') }}">
                                             @csrf
-                                            <button type="submit" class="dropdown-item rounded-3 py-2 text-danger">Sign Out</button>
+                                            <button type="submit" class="dropdown-item py-3 px-4 text-danger">Sign Out</button>
                                         </form>
                                     </li>
                                 </ul>
