@@ -1,5 +1,82 @@
 @import 'bootstrap/dist/css/bootstrap.min.css';
 
+/* MODERN "BIRDIE" THEME */
+:root {
+    --primary-color: #6366f1; /* Indigo */
+    --primary-hover: #4f46e5;
+    --bg-color: #f3f4f6;      /* Soft Light Gray */
+    --text-main: #111827;
+    --text-muted: #6b7280;
+    --card-radius: 16px;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* Navbar: Floating & Glassy */
+.navbar {
+    background-color: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    box-shadow: 0 4px 20px -5px rgba(0,0,0,0.05);
+}
+
+.nav-link {
+    font-weight: 600;
+    color: var(--text-muted) !important;
+    transition: color 0.2s;
+}
+
+.nav-link:hover, .nav-link.active {
+    color: var(--primary-color) !important;
+}
+
+/* Main Container */
+.feed-container {
+    max-width: 720px; /* Wider, focused read area */
+    margin: 0 auto;
+    border: none;
+    background: transparent;
+}
+
+/* Card Aesthetic for Tweets & Forms */
+.modern-card {
+    background: white;
+    border-radius: var(--card-radius);
+    border: 1px solid rgba(0,0,0,0.03);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    transition: transform 0.2s, box-shadow 0.2s;
+    margin-bottom: 20px; /* Space between cards */
+    overflow: hidden;
+}
+
+.modern-card:hover {
+    transform: translateY(-2px); /* Subtle lift effect */
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: var(--primary-color);
+    border: none;
+    font-weight: 600;
+    padding: 8px 20px;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-hover);
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+    letter-spacing: -0.025em; /* Tight, modern tracking */
+    font-weight: 800;
+}
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
 /* BIRDIE MINIMALIST THEME */
 body {
     background-color: #ffffff; /* Clean white background */
