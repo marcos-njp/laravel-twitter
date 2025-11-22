@@ -43,24 +43,40 @@
                         <h4 class="fw-bold mb-1" style="font-family: 'Merriweather', serif;">Profile Information</h4>
                         <p class="text-muted small mb-4 border-bottom pb-3">Update your public profile details.</p>
 
-                        <form method="post" action="{{ route('profile.update') }}">
+                        <form method="post" action="{{ route('profile.update') }}" enctype="multipart/form-data">
                             @csrf
                             @method('patch')
 
                             <div class="mb-4">
-                                <label class="form-label fw-bold small text-uppercase text-muted" style="font-family: 'Inter', sans-serif; letter-spacing: 0.5px;">Display Name</label>
+                                <label class="form-label fw-bold small text-uppercase text-muted" style="font-family: 'Inter';">Profile Photo</label>
+                                <div class="d-flex align-items-center gap-3">
+                                    @if($user->avatar)
+                                        <img src="{{ asset('storage/' . $user->avatar) }}" alt="Avatar" class="rounded-circle object-fit-cover border" style="width: 60px; height: 60px;">
+                                    @else
+                                        <div class="rounded-circle bg-dark text-white d-flex align-items-center justify-content-center fw-bold fs-4" style="width: 60px; height: 60px;">
+                                            {{ substr($user->name, 0, 1) }}
+                                        </div>
+                                    @endif
+                                    
+                                    <input type="file" name="avatar" class="form-control form-control-sm w-auto">
+                                </div>
+                                @error('avatar') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label fw-bold small text-uppercase text-muted" style="font-family: 'Inter'; letter-spacing: 0.5px;">Display Name</label>
                                 <input type="text" name="name" class="form-control" value="{{ old('name', $user->name) }}" required>
                                 @error('name') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
                             </div>
 
                             <div class="mb-4">
-                                <label class="form-label fw-bold small text-uppercase text-muted" style="font-family: 'Inter', sans-serif; letter-spacing: 0.5px;">Email Address</label>
+                                <label class="form-label fw-bold small text-uppercase text-muted" style="font-family: 'Inter'; letter-spacing: 0.5px;">Email Address</label>
                                 <input type="email" name="email" class="form-control" value="{{ old('email', $user->email) }}" required>
                                 @error('email') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
                             </div>
 
                             <div class="mb-4">
-                                <label class="form-label fw-bold small text-uppercase text-muted" style="font-family: 'Inter', sans-serif; letter-spacing: 0.5px;">Bio <span class="fw-normal text-lowercase">(optional)</span></label>
+                                <label class="form-label fw-bold small text-uppercase text-muted" style="font-family: 'Inter'; letter-spacing: 0.5px;">Bio <span class="fw-normal text-lowercase">(optional)</span></label>
                                 <textarea name="bio" class="form-control" rows="4" maxlength="160">{{ old('bio', $user->bio) }}</textarea>
                                 <div class="form-text">Tell the world about yourself. Max 160 chars.</div>
                                 @error('bio') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
