@@ -58,9 +58,17 @@
                 <p class="card-text fs-5">{{ $tweet->content }}</p>
 
                 <div class="d-flex gap-3">
-                    <button class="btn btn-sm btn-light text-primary">
-                        ❤️ <span class="ms-1">{{ $tweet->likes_count }}</span>
-                    </button>
+                    <form action="{{ route('tweets.like', $tweet) }}" method="POST">
+                        @csrf
+                        @php
+                            $userHasLiked = $tweet->likes->contains('user_id', Auth::id());
+                        @endphp
+
+                        <button type="submit" class="btn btn-sm {{ $userHasLiked ? 'btn-danger' : 'btn-light text-danger' }} border border-danger">
+                            {{ $userHasLiked ? '❤️' : '🤍' }} 
+                            <span class="ms-1 fw-bold">{{ $tweet->likes_count }}</span>
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>

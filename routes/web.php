@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TweetController;
+use App\Http\Controllers\LikeController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth; // <--- ADD THIS IMPORT
 
@@ -16,6 +17,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    // Like System Route
+    Route::post('/tweets/{tweet}/like', [LikeController::class, 'store'])->name('tweets.like');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
