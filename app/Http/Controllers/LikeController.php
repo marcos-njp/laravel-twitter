@@ -8,25 +8,28 @@ use Illuminate\Support\Facades\Auth;
 
 class LikeController extends Controller
 {
-    public function store(Tweet $tweet): RedirectResponse
+    public function store(Tweet $tweet)
     {
-        // REQUIREMENT: Users can unlike tweets they've previously liked
-        // Check if the current user has already liked this specific tweet
-        $existingLike = $tweet->likes()->where('user_id', Auth::id())->first();
+        $user = Auth::user();
+        $existingLike = $tweet->likes()->where('user_id', $user->id)->first();
+        $liked = false;
 
         if ($existingLike) {
-            // If yes, delete it (Unlike)
             $existingLike->delete();
+            $liked = false;
         } else {
-            // REQUIREMENT: Users can like any tweet
-            // REQUIREMENT: One user can only like a tweet once (Database prevents duplicates, this logic creates the first one)
-            $tweet->likes()->create([
-                'user_id' => Auth::id(),
+            $tweet->likes()->create(['user_id' => $user->id]);
+            $liked = true;
+        }
+
+        // Check if request is AJAX (JavaScript)
+        if (request()->wantsJson()) {
+            return response()->json([
+                'liked' => $liked,
+                'count' => $tweet->likes()->count(),
             ]);
         }
 
-        // REQUIREMENT: Updates without full page refresh (Bonus) - strictly speaking this is a refresh (back), 
-        // but it returns user to exact scroll position.
         return back();
     }
 }
