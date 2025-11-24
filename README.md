@@ -1,131 +1,100 @@
-Birdie - Social Media Application 🌲
+# 🌲 Birdie — Social Media Application
 
-📄 Project Description and Purpose
+A minimalist micro-blogging platform built for the **Integrated Programming Laboratory Midterm Exam**.  
+Birdie allows users to post short insights, research notes, and daily updates with a clean and simple interface.
 
-Birdie is a robust, minimalist social media platform built for the Integrated Laboratory Midterm Exam. Designed as an educative micro-blogging network, its purpose is to provide a clean, distraction-free space for users to share quick insights, research notes, and daily learnings. The application strictly adheres to academic standards for secure implementation and modern UI/UX principles.
+---
 
-✨ Features Implemented
+## 📌 Table of Contents
+- [Features](#-features)
+- [Tech Stack](#-tech-stack)
+- [Installation](#-installation)
+- [Environment Configuration](#-environment-configuration)
+- [Database Setup](#-database-setup)
+- [Running the Application](#-running-the-application)
+- [Screenshots](#-screenshots)
+- [Developer](#-developer)
 
-I. User Authentication & Profile
+---
 
-Secure Auth: Full registration, login, and logout system using Laravel Breeze. Protected routes ensure only authenticated users can tweet and like.
+## ✨ Features
 
-Profile Management: Users can update their Name, Email, Password, and Profile Photo (Avatar).
+### **1. User Authentication & Profile**
+- Authentication system via **Laravel Breeze**
+- Register, Login, Logout
+- Protected routes for posting and liking
+- Editable profile: Name, Email, Password, Profile Photo
+- “About Me” Bio field
+- Public Profile Page with:
+  - Total Posts
+  - Total Likes Received
+  - Bio
+  - Join Date
 
-Bio Integration: Custom "About Me" bio displayed on profiles and settings.
+---
 
-Profile Views: Public profile pages showing user activity statistics (Total Posts, Total Likes Received), Bio, and Join Date.
+### **2. Content Management (Posts)**
+- Create posts up to **280 characters**
+- Real-time character counter
+- Global feed sorted by **Newest First**
+- Edit own posts (shows **Edited** indicator)
+- Delete own posts with confirmation
+- “**You**” badge on owned posts
 
-II. Content Management (Entries)
+---
 
-Create: Real-time character counter (Max 280 chars).
+### **3. Engagement System**
+- Like / Unlike using **AJAX**
+- Heart icon updates instantly
+- One-like-per-user rule enforced
+- Sidebar with:
+  - Latest registered users
+  - Activity stats
+  - Bio snippets
 
-Feed Sorting: Global feed displaying content, author, and timestamp. Feed is ordered by Newest first.
+---
 
-Update: Users can edit their own posts. Shows a visual (Edited) indicator if modified.
+### **4. Technical & Design**
+- Custom **Editorial Forest** theme (Green/Sand palette)
+- Fonts: **Merriweather** + **Inter**
+- Organized Controllers and Eloquent relationships
+- Form validation implemented
+- Migrations for Users, Tweets, Likes
+- Profile photo storage using `php artisan storage:link`
 
-Delete: Users can delete their own posts, with a confirmation prompt required before deletion.
+---
 
-Ownership: Clear "You" badge displayed on owned posts.
+## 🛠 Tech Stack
+- **Laravel 11**
+- **Laravel Breeze**
+- **MySQL**
+- **TailwindCSS / Vite**
+- **JavaScript / AJAX**
+- **PHP 8.2+**
 
-III. Engagement System
+---
 
-Like/Unlike: Instant toggle using AJAX (optimized from the original form submission). One user can only like a post once.
+## 📥 Installation
 
-Visual Indicator: Heart icon changes color to show if the current user has liked a post.
-
-Community Sidebar: Dynamic list of the latest registered members showing activity stats and bio snippets.
-
-IV. Technical & Design
-
-Theme: Custom "Editorial Forest" design (Green/Sand palette) with Merriweather (Serif) and Inter (Sans-serif) fonts enforced globally.
-
-Code Quality: Proper use of dedicated Controllers, Eloquent Models with defined relationships, and implemented Form Validation.
-
-Database: Proper migrations for users, tweets, and likes tables with correct foreign keys and constraints.
-
-🛠️ Installation Instructions
-
-Prerequisites
-
-WAMPP/XAMPP (or equivalent PHP/MySQL server)
-
-PHP 8.2 or higher
-
-Composer
-
-Node.js & NPM
-
-1. Setup & Dependencies
-
-# 1. Clone the repository
-git clone [https://github.com/marcos-njp/laravel-twitter.git](https://github.com/marcos-njp/laravel-twitter.git)
+### **1. Clone Repository**
+```bash
+git clone https://github.com/marcos-njp/laravel-twitter.git
 cd laravel-twitter
 
-# 2. Install PHP and Frontend Dependencies
+2. Install Dependencies
 composer install
 npm install
 
+⚙️ Environment Configuration
+Create .env and generate key:
 
-2. Configure Environment
-
-Create your environment file and set up the database connection.
-
-# 3. Create environment file and generate key
 cp .env.example .env
 php artisan key:generate
 
-
-Configure .env Database Section:
-
+Update the .env database section:
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=birdie_db  # Create this database in phpMyAdmin
+DB_DATABASE=birdie_db
 DB_USERNAME=root
 DB_PASSWORD=
-
-
-3. Database & Storage Setup
-
-Run migrations and create the necessary symbolic link for file storage.
-
-# 4. Run Migrations (Creates Users, Tweets, Likes tables)
-php artisan migrate
-
-# 5. CRITICAL: Link public storage for profile photos and uploaded files
-php artisan storage:link 
-
-
-4. Run Application
-
-Open two terminal windows:
-
-# Terminal 1 (Backend Server)
-php artisan serve
-
-# Terminal 2 (Frontend Assets Compiler)
-npm run dev
-
-
-Access the application at: http://localhost:8000
-
-📸 Screenshots of the Application
-
-The application features a clean, responsive layout across all views.
-
-Landing Page: 
-
-User Feed:
-
-Account Settings:
-
-User Profile:
-
-👨‍💻 Credits
-
-Developed by: Niño Marcos
-LinkedIn: linkedin.com/in/niño-marcos
-GitHub: github.com/marcos-njp/laravel-twitter
-
-Built for the Integrated Programming Laboratory Midterm Exam.
