@@ -71,6 +71,15 @@
                     style="width: 500px; height: 500px; filter: blur(80px); z-index: 0; transform: translate(50px, -50px);">
                 </div>
 
+                <div class="position-absolute shadow-lg rounded-4 overflow-hidden"
+                    style="width: 380px; height: 500px; top: 30px; right: 30px; transform: rotate(4deg); z-index: 1;">
+                    <img src="https://picsum.photos/id/28/380/500" alt="Nature" class="w-100 h-100 object-fit-cover">
+                </div>
+
+                <div class="position-absolute shadow rounded-4 overflow-hidden border border-4 border-white"
+                    style="width: 200px; height: 200px; bottom: 80px; left: 50px; transform: rotate(-8deg); z-index: 2;">
+                    <img src="https://picsum.photos/id/10/200/200" alt="Landscape" class="w-100 h-100 object-fit-cover">
+                </div>
 
                 <div class="position-absolute bg-white p-4 rounded-4 shadow-lg border"
                     style="width: 350px; top: 120px; left: 20px; transform: rotate(-3deg); z-index: 4;">

@@ -1,64 +1,131 @@
-<<<<<<< HEAD
-# laravel-twitter
-School task to create a Twitter-like web application using Laravel with Laravel Breeze.  
-=======
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+Birdie - Social Media Application 🌲
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+📄 Project Description and Purpose
 
-## About Laravel
+Birdie is a robust, minimalist social media platform built for the Integrated Laboratory Midterm Exam. Designed as an educative micro-blogging network, its purpose is to provide a clean, distraction-free space for users to share quick insights, research notes, and daily learnings. The application strictly adheres to academic standards for secure implementation and modern UI/UX principles.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+✨ Features Implemented
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+I. User Authentication & Profile
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Secure Auth: Full registration, login, and logout system using Laravel Breeze. Protected routes ensure only authenticated users can tweet and like.
 
-## Learning Laravel
+Profile Management: Users can update their Name, Email, Password, and Profile Photo (Avatar).
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+Bio Integration: Custom "About Me" bio displayed on profiles and settings.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Profile Views: Public profile pages showing user activity statistics (Total Posts, Total Likes Received), Bio, and Join Date.
 
-## Laravel Sponsors
+II. Content Management (Entries)
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Create: Real-time character counter (Max 280 chars).
 
-### Premium Partners
+Feed Sorting: Global feed displaying content, author, and timestamp. Feed is ordered by Newest first.
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+Update: Users can edit their own posts. Shows a visual (Edited) indicator if modified.
 
-## Contributing
+Delete: Users can delete their own posts, with a confirmation prompt required before deletion.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Ownership: Clear "You" badge displayed on owned posts.
 
-## Code of Conduct
+III. Engagement System
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Like/Unlike: Instant toggle using AJAX (optimized from the original form submission). One user can only like a post once.
 
-## Security Vulnerabilities
+Visual Indicator: Heart icon changes color to show if the current user has liked a post.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Community Sidebar: Dynamic list of the latest registered members showing activity stats and bio snippets.
 
-## License
+IV. Technical & Design
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
->>>>>>> 44342f5 (Initial full project commit)
+Theme: Custom "Editorial Forest" design (Green/Sand palette) with Merriweather (Serif) and Inter (Sans-serif) fonts enforced globally.
+
+Code Quality: Proper use of dedicated Controllers, Eloquent Models with defined relationships, and implemented Form Validation.
+
+Database: Proper migrations for users, tweets, and likes tables with correct foreign keys and constraints.
+
+🛠️ Installation Instructions
+
+Prerequisites
+
+WAMPP/XAMPP (or equivalent PHP/MySQL server)
+
+PHP 8.2 or higher
+
+Composer
+
+Node.js & NPM
+
+1. Setup & Dependencies
+
+# 1. Clone the repository
+git clone [https://github.com/marcos-njp/laravel-twitter.git](https://github.com/marcos-njp/laravel-twitter.git)
+cd laravel-twitter
+
+# 2. Install PHP and Frontend Dependencies
+composer install
+npm install
+
+
+2. Configure Environment
+
+Create your environment file and set up the database connection.
+
+# 3. Create environment file and generate key
+cp .env.example .env
+php artisan key:generate
+
+
+Configure .env Database Section:
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=birdie_db  # Create this database in phpMyAdmin
+DB_USERNAME=root
+DB_PASSWORD=
+
+
+3. Database & Storage Setup
+
+Run migrations and create the necessary symbolic link for file storage.
+
+# 4. Run Migrations (Creates Users, Tweets, Likes tables)
+php artisan migrate
+
+# 5. CRITICAL: Link public storage for profile photos and uploaded files
+php artisan storage:link 
+
+
+4. Run Application
+
+Open two terminal windows:
+
+# Terminal 1 (Backend Server)
+php artisan serve
+
+# Terminal 2 (Frontend Assets Compiler)
+npm run dev
+
+
+Access the application at: http://localhost:8000
+
+📸 Screenshots of the Application
+
+The application features a clean, responsive layout across all views.
+
+Landing Page: 
+
+User Feed:
+
+Account Settings:
+
+User Profile:
+
+👨‍💻 Credits
+
+Developed by: Niño Marcos
+LinkedIn: linkedin.com/in/niño-marcos
+GitHub: github.com/marcos-njp/laravel-twitter
+
+Built for the Integrated Programming Laboratory Midterm Exam.
