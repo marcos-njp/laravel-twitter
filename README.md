@@ -68,7 +68,7 @@ Birdie allows users to post short insights, research notes, and daily updates wi
 - **Laravel 11**
 - **Laravel Breeze**
 - **MySQL**
-- **TailwindCSS / Vite**
+- **Bootstrap**
 - **JavaScript / AJAX**
 - **PHP 8.2+**
 
@@ -98,3 +98,6 @@ DB_PORT=3306
 DB_DATABASE=birdie_db
 DB_USERNAME=root
 DB_PASSWORD=
+
+---
+Created using the guidance of Gemini 3 Pro
