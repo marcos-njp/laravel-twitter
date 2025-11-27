@@ -6,14 +6,14 @@ A minimalist micro-blogging platform built for the Integrated Programming Labora
 
 ## Table of Contents
 
-  - [Features](https://www.google.com/search?q=%23features)
-  - [Tech Stack](https://www.google.com/search?q=%23tech-stack)
-  - [Installation](https://www.google.com/search?q=%23installation)
-  - [Environment Configuration](https://www.google.com/search?q=%23environment-configuration)
-  - [Database Setup](https://www.google.com/search?q=%23database-setup)
-  - [Running the Application](https://www.google.com/search?q=%23running-the-application)
-  - [Screenshots](https://www.google.com/search?q=%23screenshots)
-  - [Developer](https://www.google.com/search?q=%23developer)
+  - [Features](#features)
+  - [Tech Stack](#tech-stack)
+  - [Installation](#installation)
+  - [Environment Configuration](#environment-configuration)
+  - [Database Setup](#database-setup)
+  - [Running the Application](#running-the-application)
+  - [Screenshots](#screenshots)
+  - [Developer](#developer)
 
 -----
 
